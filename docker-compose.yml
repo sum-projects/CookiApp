@@ -1,6 +1,18 @@
 version: '3'
 
 services:
+  auth:
+    build:
+      context: ./
+      dockerfile: ./docker/auth.dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=postgres password=password dbname=cooki_app sslmode=disable timezone=UTC connect_timeout=5"
   postgres:
     image: 'postgres:14.0'
     ports:
