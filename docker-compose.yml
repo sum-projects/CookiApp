@@ -1,5 +1,6 @@
 version: '3'
 
+services:
   postgres:
     image: 'postgres:14.0'
     ports:
@@ -11,6 +12,6 @@ version: '3'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: ugame
+      POSTGRES_DB: cooki_app
     volumes:
       - ./db-data/postgres/:/var/lib/postgresql/data/
