@@ -18,6 +18,10 @@ func main() {
 		log.Fatal("cannot connect to db:", err)
 	}
 
+	if err = conn.Ping(); err != nil {
+		log.Fatal("ping connect to db:", err)
+	}
+
 	store := db.NewStore(conn)
 	server := NewServer(store)
 

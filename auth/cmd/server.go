@@ -20,10 +20,16 @@ func NewServer(store *db.Store) *Server {
 		})
 	})
 
+	router.POST("/register", server.register)
+
 	server.router = router
 	return server
 }
 
 func (s Server) Start(address string) error {
 	return s.router.Run(address)
+}
+
+func errorRequest(err error) gin.H {
+	return gin.H{"error": err.Error()}
 }

@@ -1,11 +1,17 @@
 package db
 
-import "database/sql"
+import (
+	"database/sql"
+	"github.com/sum-project/CookiApp/auth/cmd/repository"
+	"github.com/sum-project/CookiApp/auth/cmd/repository/postgres"
+)
 
 type Store struct {
-	DB *sql.DB
+	UserRepository repository.UserRepository
 }
 
 func NewStore(conn *sql.DB) *Store {
-	return &Store{DB: conn}
+	return &Store{
+		UserRepository: postgres.NewUserRepository(conn),
+	}
 }
