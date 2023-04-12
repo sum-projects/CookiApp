@@ -1,9 +1,27 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"database/sql"
+	_ "github.com/lib/pq"
+	"github.com/sum-project/CookiApp/auth/cmd/db"
+	"log"
+)
 
 func main() {
-	r := gin.Default()
-	routes(r)
-	r.Run()
+	config, err := LoadConfig("/app")
+	if err != nil {
+		log.Fatal("cannot load config:", err)
+	}
+
+	conn, err := sql.Open(config.DBDriver, config.DBSource)
+	if err != nil {
+		log.Fatal("cannot connect to db:", err)
+	}
+
+	store := db.NewStore(conn)
+	server := NewServer(store)
+
+	if err = server.Start(config.ServerAddress); err != nil {
+		log.Fatal("cannot start server:", err)
+	}
 }
