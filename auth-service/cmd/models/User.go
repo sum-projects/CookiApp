@@ -12,9 +12,14 @@ type User struct {
 	Email     string     `json:"email"`
 	Password  string     `json:"password"`
 	Role      []byte     `json:"role"`
+	Active    bool       `json:"active"`
 	CreatedAt time.Time  `json:"-"`
 	UpdatedAt time.Time  `json:"-"`
 	DeletedAt *time.Time `json:"-"`
+}
+
+func (u *User) Activate() {
+	u.Active = true
 }
 
 func (u *User) PasswordMatches(p string) (bool, error) {

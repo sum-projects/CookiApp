@@ -24,7 +24,7 @@ func (u *userRepository) GetUserByEmail(email string) (*models.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `select id, email, password, role, created_at, updated_at, deleted_at 
+	query := `select id, email, password, role, active, created_at, updated_at, deleted_at 
 				from users where email = $1 and deleted_at is null`
 
 	var user models.User
@@ -35,6 +35,7 @@ func (u *userRepository) GetUserByEmail(email string) (*models.User, error) {
 		&user.Email,
 		&user.Password,
 		&user.Role,
+		&user.Active,
 		&user.CreatedAt,
 		&user.UpdatedAt,
 		&user.DeletedAt,
@@ -55,7 +56,7 @@ func (u *userRepository) GetUserByID(id uuid.UUID) (*models.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `select id, email, password, role, created_at, updated_at, deleted_at 
+	query := `select id, email, password, role, active, created_at, updated_at, deleted_at 
 				from users where id = $1 and deleted_at is null`
 
 	var user models.User
@@ -66,6 +67,7 @@ func (u *userRepository) GetUserByID(id uuid.UUID) (*models.User, error) {
 		&user.Email,
 		&user.Password,
 		&user.Role,
+		&user.Active,
 		&user.CreatedAt,
 		&user.UpdatedAt,
 		&user.DeletedAt,
@@ -76,6 +78,33 @@ func (u *userRepository) GetUserByID(id uuid.UUID) (*models.User, error) {
 	}
 
 	return &user, nil
+}
+
+func (u *userRepository) UpdateUser(user *models.User) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	stmt := `update users set
+			email = $1,
+			password = $2,
+			role = $3,
+			active = $4
+			where id = $5
+		`
+
+	_, err := u.DB.ExecContext(ctx, stmt,
+		user.Email,
+		user.Password,
+		user.Role,
+		user.Active,
+		user.ID,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (u *userRepository) InsertUser(user models.User) (uuid.UUID, error) {

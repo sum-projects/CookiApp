@@ -1,2 +1,6 @@
 /.idea
-/auth/app.env
+/auth-service/app.env
+/auth-service/authApp
+
+/mail-service/app.env
+/mail-service/mailApp

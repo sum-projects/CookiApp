@@ -1,10 +1,11 @@
 AUTH_BINARY=authApp
+MAIL_BINARY=mailApp
 
 up:
 	@echo "Starting Docker images..."
 	docker compose up -d
 	@echo "Docker images started!"
-up_build: build_auth
+up_build: build_auth build_mail
 	@echo "Stopping docker images (if running...)"
 	docker compose down
 	@echo "Building (when required) and starting docker images..."
@@ -15,6 +16,10 @@ down:
 	docker compose down
 	@echo "Done!"
 build_auth:
-	@echo "Building broker binary..."
-	cd auth && env GOOS=linux CGO_ENABLED=0 go build -o ${AUTH_BINARY} ./cmd
+	@echo "Building auth binary..."
+	cd auth-service && env GOOS=linux CGO_ENABLED=0 go build -o ${AUTH_BINARY} ./cmd
+	@echo "Done!"
+build_mail:
+	@echo "Building mail binary..."
+	cd mail-service && env GOOS=linux CGO_ENABLED=0 go build -o ${MAIL_BINARY} ./cmd
 	@echo "Done!"

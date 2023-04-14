@@ -13,6 +13,16 @@ services:
       replicas: 1
     networks:
       - mynet
+  mailer-service:
+    build:
+      context: ./
+      dockerfile: ./docker/mail.dockerfile
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    networks:
+      - mynet
   postgres:
     image: 'postgres:14.2'
     ports:
@@ -24,11 +34,16 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: cooki_app
+      POSTGRES_DB: cook_app
     volumes:
       - ./db-data/postgres/:/var/lib/postgresql/data/
     networks:
       - mynet
+  mailhog:
+    image: 'mailhog/mailhog:latest'
+    ports:
+      - "1025:1025"
+      - "8025:8025"
 
 networks:
   mynet:
