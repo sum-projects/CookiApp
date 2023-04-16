@@ -21,6 +21,8 @@ func NewServer(mailer Mail) *Server {
 		})
 	})
 
+	router.POST("/send", server.SendMail)
+
 	server.router = router
 	return server
 }

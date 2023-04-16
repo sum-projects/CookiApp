@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  auth:
+  auth-service:
     build:
       context: ./
       dockerfile: ./docker/auth.dockerfile
@@ -13,7 +13,7 @@ services:
       replicas: 1
     networks:
       - mynet
-  mailer-service:
+  mail-service:
     build:
       context: ./
       dockerfile: ./docker/mail.dockerfile
@@ -44,6 +44,8 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
+    networks:
+      - mynet
 
 networks:
   mynet:

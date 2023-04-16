@@ -17,8 +17,7 @@ type MailPayload struct {
 func (s *Server) sendMail(msg MailPayload) error {
 	jsonData, _ := json.MarshalIndent(msg, "", "\t")
 
-	mailServiceURL := "http://mailer-service/send"
-	req, err := http.NewRequest("POST", mailServiceURL, bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", s.config.MailService, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
 	}

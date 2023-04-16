@@ -23,7 +23,7 @@ func main() {
 	}
 
 	store := db.NewStore(conn)
-	server := NewServer(store)
+	server := NewServer(store, config)
 
 	if err = server.Start(config.ServerAddress); err != nil {
 		log.Fatal("cannot start server:", err)

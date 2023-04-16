@@ -51,12 +51,17 @@ func (s *Server) register(c *gin.Context) {
 		return
 	}
 
-	s.sendMail(MailPayload{
+	err = s.sendMail(MailPayload{
 		From:    "register@cookapp.com",
 		To:      user.Email,
 		Subject: "Potwierdz swoje konto",
 		Message: "Potwierdz swoje konto",
 	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, errorRequest(err))
+		return
+	}
 
 	c.JSON(http.StatusAccepted, gin.H{
 		"message": id,

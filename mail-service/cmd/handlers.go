@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -28,7 +29,9 @@ func (s *Server) SendMail(c *gin.Context) {
 	}
 
 	if err := s.mailer.SendSMTPMessage(msg); err != nil {
+		log.Println(err)
 		c.JSON(http.StatusInternalServerError, errorRequest(err))
+		return
 	}
 
 	c.JSON(http.StatusAccepted, gin.H{

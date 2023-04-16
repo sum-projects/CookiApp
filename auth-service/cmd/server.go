@@ -6,12 +6,16 @@ import (
 )
 
 type Server struct {
+	config Config
 	store  *db.Store
 	router *gin.Engine
 }
 
-func NewServer(store *db.Store) *Server {
-	server := &Server{store: store}
+func NewServer(store *db.Store, config Config) *Server {
+	server := &Server{
+		store:  store,
+		config: config,
+	}
 	router := gin.Default()
 
 	router.GET("/ping", func(c *gin.Context) {
