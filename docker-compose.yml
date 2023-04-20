@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 services:
   auth-service:
@@ -13,6 +13,7 @@ services:
       replicas: 1
     networks:
       - mynet
+
   mail-service:
     build:
       context: ./
@@ -23,6 +24,7 @@ services:
       replicas: 1
     networks:
       - mynet
+
   postgres:
     image: 'postgres:14.2'
     ports:
@@ -39,6 +41,20 @@ services:
       - ./db-data/postgres/:/var/lib/postgresql/data/
     networks:
       - mynet
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./db-data/redis/:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - mynet
+
+
   mailhog:
     image: 'mailhog/mailhog:latest'
     ports:

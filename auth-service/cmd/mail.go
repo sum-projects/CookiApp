@@ -3,7 +3,8 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -32,7 +33,11 @@ func (s *Server) sendMail(msg MailPayload) error {
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusAccepted {
-		return errors.New("error calling mail service")
+		resBody, err := io.ReadAll(res.Body)
+		if err != nil {
+			return fmt.Errorf("error calling mail service: %v", err)
+		}
+		return fmt.Errorf("error calling mail service: %s", resBody)
 	}
 
 	return err

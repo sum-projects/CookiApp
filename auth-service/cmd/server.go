@@ -25,6 +25,7 @@ func NewServer(store *db.Store, config Config) *Server {
 	})
 
 	router.POST("/register", server.register)
+	router.GET("/confirm_user/:token", server.confirmUser)
 
 	server.router = router
 	return server
