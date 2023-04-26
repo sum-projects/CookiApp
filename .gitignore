@@ -5,4 +5,7 @@
 /mail-service/app.env
 /mail-service/mailApp
 
+/gateway-service/app.env
+/gateway-service/gatewayApp
+
 /db-data/redis

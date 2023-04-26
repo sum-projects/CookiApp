@@ -1,13 +1,24 @@
 version: '3.9'
 
 services:
+  gateway-service:
+    build:
+      context: ./
+      dockerfile: ./docker/gateway.dockerfile
+    restart: always
+    ports:
+      - "8080:80"
+    deploy:
+      mode: replicated
+      replicas: 1
+    networks:
+      - mynet
+
   auth-service:
     build:
       context: ./
       dockerfile: ./docker/auth.dockerfile
     restart: always
-    ports:
-      - "8080:8080"
     deploy:
       mode: replicated
       replicas: 1
